@@ -44,11 +44,9 @@ void main() async {
   const String nomeFilme = 'The Batman';
   final Map<String, dynamic> filme = await getFilmePorNome(nomeFilme);
 
-  //   https://image.tmdb.org/t/p/original/
-  //usar quando passar a uri do thumb no app
   print('Thumbnail: ${filme['thumbnail']}');
   print('Nome: ${filme['nome']}');
   print('Ano de lançamento: ${filme['ano_de_lancamento']}');
-  print('Rating: ${filme['rating']} de 10');
+  print('Classificação: ${filme['rating']}');
   print('Descrição: ${filme['descricao']}');
 }

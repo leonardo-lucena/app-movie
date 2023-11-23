@@ -1,6 +1,11 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:gerador_de_filmes/tela_detalhes.dart';
 import 'tela_filme_gerado.dart';
 import 'tela_favoritos.dart';
+import 'tela_detalhes.dart';
+import 'gerar_filme.dart';
 
 class TelaGeracao extends StatefulWidget {
   @override
@@ -9,7 +14,15 @@ class TelaGeracao extends StatefulWidget {
 
 class _TelaGeracaoState extends State<TelaGeracao> {
   int _selectedIndex = 0;
+  GeradorFilme geradorFilme = GeradorFilme();
   String? categoriaSelecionada;
+
+  Map<String, int> categorias = {
+    'acao': 28,
+    'aventura': 12,
+    'comedia': 35,
+    'animacao': 16,
+  };
 
   void _onItemTapped(int index) {
     setState(() {
@@ -47,8 +60,8 @@ class _TelaGeracaoState extends State<TelaGeracao> {
                   child: Text('Comédia'),
                 ),
                 DropdownMenuItem<String>(
-                  value: 'suspense',
-                  child: Text('Suspense'),
+                  value: 'animacao',
+                  child: Text('Animação'),
                 ),
               ],
               onChanged: (String? selectedCategory) {
@@ -64,17 +77,27 @@ class _TelaGeracaoState extends State<TelaGeracao> {
             const SizedBox(height: 20.0),
             if (_selectedIndex == 0)
               ElevatedButton(
-                onPressed: () {
-                  // Redireciona o usuário para a tela de filme gerado
-                  // Passando a categoria selecionada como parâmetro
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        //builder: (context) => FilmeGerado(
-                        //categoriaSelecionada: categoriaSelecionada!,
-                        //),
-                        builder: (context) => FilmeGerado()),
-                  );
+                onPressed: () async {
+                  if (categoriaSelecionada != null) {
+                    int idGenero = categorias[categoriaSelecionada]!;
+                    print('Categoria selecionada: $categoriaSelecionada');
+                    print('ID do gênero: $idGenero');
+                    Map<String, dynamic> filme =
+                        await geradorFilme.getFilmeAleatorioPorGenero(idGenero);
+                    if (filme.isNotEmpty) {
+                      print('Nome do filme: ${filme['title']}');
+                      print('Detalhes do filme: $filme');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              DetalhesFilme(nomeFilme: filme['title']),
+                        ),
+                      );
+                    } else {
+                      print('Nenhum filme foi gerado.');
+                    }
+                  }
                 },
                 child: const Text("Gerar"),
               ),
