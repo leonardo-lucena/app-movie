@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gerador_de_filmes/gerar_filme.dart';
 import 'package:gerador_de_filmes/tela_filme_gerado.dart';
 import 'tela_inicial.dart';
 import 'tela_de_geracao.dart';

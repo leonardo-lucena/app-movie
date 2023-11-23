@@ -15,6 +15,7 @@ class TelaGeracao extends StatefulWidget {
 class _TelaGeracaoState extends State<TelaGeracao> {
   int _selectedIndex = 0;
   GeradorFilme geradorFilme = GeradorFilme();
+  bool isLoading = false;
   String? categoriaSelecionada;
 
   Map<String, int> categorias = {
@@ -76,30 +77,42 @@ class _TelaGeracaoState extends State<TelaGeracao> {
             ),
             const SizedBox(height: 20.0),
             if (_selectedIndex == 0)
-              ElevatedButton(
-                onPressed: () async {
-                  if (categoriaSelecionada != null) {
-                    int idGenero = categorias[categoriaSelecionada]!;
-                    print('Categoria selecionada: $categoriaSelecionada');
-                    print('ID do gênero: $idGenero');
-                    Map<String, dynamic> filme =
-                        await geradorFilme.getFilmeAleatorioPorGenero(idGenero);
-                    if (filme.isNotEmpty) {
-                      print('Nome do filme: ${filme['title']}');
-                      print('Detalhes do filme: $filme');
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              DetalhesFilme(nomeFilme: filme['title']),
-                        ),
-                      );
-                    } else {
-                      print('Nenhum filme foi gerado.');
-                    }
-                  }
-                },
-                child: const Text("Gerar"),
+              Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (categoriaSelecionada != null) {
+                        int idGenero = categorias[categoriaSelecionada]!;
+                        print('Categoria selecionada: $categoriaSelecionada');
+                        print('ID do gênero: $idGenero');
+                        setState(() {
+                          isLoading = true;
+                        });
+                        Map<String, dynamic> filme = await geradorFilme
+                            .getFilmeAleatorioPorGenero(idGenero);
+                        if (filme.isNotEmpty) {
+                          print('Nome do filme: ${filme['title']}');
+                          print('Detalhes do filme: $filme');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  DetalhesFilme(nomeFilme: filme['title']),
+                            ),
+                          );
+                        } else {
+                          print('Nenhum filme foi gerado.');
+                        }
+                        setState(() {
+                          isLoading = false;
+                        });
+                      }
+                    },
+                    child: const Text("Gerar"),
+                  ),
+                  const SizedBox(height: 20.0),
+                  if (isLoading) CircularProgressIndicator(),
+                ],
               ),
             if (_selectedIndex == 1)
               TextButton(

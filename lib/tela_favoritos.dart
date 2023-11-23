@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gerador_de_filmes/tela_de_geracao.dart';
 
 /// Flutter code sample for custom list items.
 
@@ -14,7 +15,7 @@ class TelaFavoritos extends StatefulWidget {
 }
 
 class _TelaFavoritosState extends State<TelaFavoritos> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -49,20 +50,27 @@ class _TelaFavoritosState extends State<TelaFavoritos> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Gerar',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favoritos',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue,
-        onTap: _onItemTapped,
-      ),
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add),
+              label: 'Gerar',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite),
+              label: 'Favoritos',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.blue,
+          onTap: (index) {
+            if (index == 0) {
+              // Redireciona o usuário para a tela de favoritos
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => TelaGeracao()),
+              );
+            }
+          }),
     );
   }
 }
