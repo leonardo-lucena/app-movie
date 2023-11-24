@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../routers/routers.dart';
+import 'tela_de_geracao.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TelaInicial extends StatefulWidget {
   const TelaInicial({super.key});
@@ -13,6 +14,35 @@ class _HomePageState extends State<TelaInicial> {
   String _telefone = "";
 
   @override
+  void initState() {
+    super.initState();
+    _loadUserData().then((_) {
+      if (_usuario.isNotEmpty && _telefone.isNotEmpty) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => TelaGeracao()),
+          );
+        });
+      }
+    });
+  }
+
+  _loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _usuario = (prefs.getString('usuario') ?? "");
+      _telefone = (prefs.getString('telefone') ?? "");
+    });
+  }
+
+  _saveUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('usuario', _usuario);
+    prefs.setString('telefone', _telefone);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -24,6 +54,7 @@ class _HomePageState extends State<TelaInicial> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
+              controller: TextEditingController(text: _usuario),
               decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.person),
                   suffixIcon: Icon(Icons.clear),
@@ -32,9 +63,11 @@ class _HomePageState extends State<TelaInicial> {
                   helperText: 'Insira seu nome de Usuário'),
               onChanged: (text) {
                 _usuario = text;
+                _saveUserData();
               },
             ),
             TextField(
+              controller: TextEditingController(text: _telefone),
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.phone),
                 suffixIcon: Icon(Icons.clear),
@@ -44,6 +77,7 @@ class _HomePageState extends State<TelaInicial> {
               ),
               onChanged: (text) {
                 _telefone = text;
+                _saveUserData();
               },
             ),
             Container(
@@ -54,10 +88,14 @@ class _HomePageState extends State<TelaInicial> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    // Gerar um novo filme
-                    Navigator.of(context).pushReplacementNamed(
-                      AppRoutes.telaGeracao,
-                    );
+                    if (_usuario.isNotEmpty && _telefone.isNotEmpty) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => TelaGeracao()),
+                      );
+                    } else {
+                      // Mostrar uma mensagem para o usuário preencher os campos
+                    }
                   },
                   child: const Text("Avançar"),
                 ),
