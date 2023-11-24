@@ -143,13 +143,13 @@ class _DetalhesFilmeState extends State<DetalhesFilme> {
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(height: 25.0),
-                Padding(padding: const EdgeInsets.only(top: 5)),
-                Expanded(
-                  child: Image.network(
+          : SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 0.0),
+                  //Padding(padding: const EdgeInsets.only(top: 5)),
+                  Image.network(
                     'https://image.tmdb.org/t/p/original${filme?['thumbnail']}',
                     loadingBuilder: (BuildContext context, Widget child,
                         ImageChunkEvent? loadingProgress) {
@@ -167,9 +167,7 @@ class _DetalhesFilmeState extends State<DetalhesFilme> {
                       );
                     },
                   ),
-                ),
-                Expanded(
-                  child: Container(
+                  Container(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,8 +197,8 @@ class _DetalhesFilmeState extends State<DetalhesFilme> {
                       ],
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
