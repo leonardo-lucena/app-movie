@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../routers/routers.dart';
 
 class TelaInicial extends StatefulWidget {
   const TelaInicial({super.key});
@@ -54,6 +55,9 @@ class _HomePageState extends State<TelaInicial> {
                 ElevatedButton(
                   onPressed: () {
                     // Gerar um novo filme
+                    Navigator.of(context).pushReplacementNamed(
+                      AppRoutes.telaGeracao,
+                    );
                   },
                   child: const Text("Avançar"),
                 ),

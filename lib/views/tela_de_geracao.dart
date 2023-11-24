@@ -1,11 +1,11 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:gerador_de_filmes/tela_detalhes.dart';
+import 'package:gerador_de_filmes/views/tela_detalhes.dart';
 import 'tela_filme_gerado.dart';
 import 'tela_favoritos.dart';
 import 'tela_detalhes.dart';
-import 'gerar_filme.dart';
+import '../utils/gerador.dart';
 
 class TelaGeracao extends StatefulWidget {
   @override

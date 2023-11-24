@@ -1,10 +1,11 @@
+import 'package:gerador_de_filmes/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:math';
 
 class GeradorFilme {
   Future<Map<String, dynamic>> getFilmeAleatorioPorGenero(int id) async {
-    const String apiKey = '39d0df6124fbb8624eb376008182c94e';
+    const String apiKey = Constants.apiKey;
     List<Map<String, dynamic>> filmes = [];
 
     for (int pageNumber = 1; filmes.length < 200; pageNumber++) {

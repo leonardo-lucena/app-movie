@@ -3,15 +3,15 @@ import 'filme_info_request.dart';
 
 //void main() => runApp(const DetalhesFilme());
 
-class DetalhesFilme extends StatefulWidget {
+class DetalhesFilmeCopy extends StatefulWidget {
   final Map<String, dynamic> filme;
-  const DetalhesFilme({Key? key, required this.filme}) : super(key: key);
+  const DetalhesFilmeCopy({Key? key, required this.filme}) : super(key: key);
 
   @override
   _DetalhesFilmeState createState() => _DetalhesFilmeState();
 }
 
-class _DetalhesFilmeState extends State<DetalhesFilme> {
+class _DetalhesFilmeState extends State<DetalhesFilmeCopy> {
   Map<String, dynamic>? filme;
   FilmeInfoRequest filmeInfoRequest = FilmeInfoRequest();
 
